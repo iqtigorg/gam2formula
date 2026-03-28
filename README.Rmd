@@ -34,7 +34,7 @@ remotes::install_github("iqtigorg/gam2formula")
 
 Fit a spline in a generalized additive model using `mgcv`:
 
-```{r example0, message=FALSE, out.width="50%"}
+```{r example0, message=FALSE, out.width="75%"}
 library(mgcv)
 m <- gam(mpg ~ s(qsec, bs = "cr", k = 5), data = mtcars)
 plot(m)
@@ -50,7 +50,7 @@ print(mod_formulas, term = "qsec")
 
 And use the formula for point predictions, independent of the original model object:
 
-```{r example2, out.width="50%"}
+```{r example2, out.width="75%"}
 plot(m)
 points(15:22, predict(mod_formulas, term = "qsec", newdata = data.frame(qsec = 15:22)))
 ```

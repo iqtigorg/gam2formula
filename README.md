@@ -29,7 +29,7 @@ m <- gam(mpg ~ s(qsec, bs = "cr", k = 5), data = mtcars)
 plot(m)
 ```
 
-<img src="man/figures/README-example0-1.png" alt="" width="50%" />
+<img src="man/figures/README-example0-1.png" alt="" width="75%" />
 
 Display the algebraic formula of a spline as coefficient table using
 `gam2formula` :
@@ -58,7 +58,7 @@ plot(m)
 points(15:22, predict(mod_formulas, term = "qsec", newdata = data.frame(qsec = 15:22)))
 ```
 
-<img src="man/figures/README-example2-1.png" alt="" width="50%" />
+<img src="man/figures/README-example2-1.png" alt="" width="75%" />
 
 For further examples and documentation, see our
 [vignette](inst/doc/using-gam2formula.pdf).
