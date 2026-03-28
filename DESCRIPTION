@@ -1,0 +1,28 @@
+Package: gam2formula
+Title: Formulas from splines fitted in 'mgcv'
+Version: 0.2.6
+Authors@R: c(
+  person(given = "Paul", family = "Bach",
+         email = "paul.bach@iqtig.org", role = c("aut", "cre")),
+  person(given = "Stefan", family = "Gehrig",
+         email = "stefan.gehrig@iqtig.org", role = c("aut")))
+Description: Converts spline smooths from generalized additive models
+    fitted with 'mgcv' into closed-form algebraic formulas that can be
+    printed, exported to 'LaTeX', and predicted from.
+License: MIT + file LICENSE
+Encoding: UTF-8
+Depends: R (>= 4.4.0)
+Imports: 
+    stats,
+    mgcv (>= 1.9-3),
+    purrr (>= 1.1.0),
+    tibble (>= 3.3.0),
+    kableExtra (>= 1.4.0)
+RoxygenNote: 7.3.3
+Suggests: 
+    knitr,
+    markdown,
+    testthat (>= 3.0.0),
+    mlbench
+VignetteBuilder: knitr
+Config/testthat/edition: 3

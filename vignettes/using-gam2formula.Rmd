@@ -1,0 +1,220 @@
+---
+title: "Using `gam2formula`"
+output: 
+  pdf_document:
+    toc: true
+    toc_depth: 3
+    number_sections: true
+geometry: margin=0.8in
+vignette: >
+  %\VignetteEncoding{UTF-8}
+  %\VignetteIndexEntry{Using gam2formula}
+  %\VignetteEngine{knitr::rmarkdown}
+---
+
+\newpage
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE)
+```
+
+Load packages:
+
+```{r, warning = FALSE}
+library(mgcv)
+library(gam2formula)
+```
+
+# Gaussian GAM
+
+## Simulate data and fit model with `mgcv`
+
+Fit a GAM with `mgcv` to simulated data using B-splines, P-splines and cubic regression splines, among others:
+ 
+```{r, generate}
+set.seed(2)
+dat <- gamSim(1, n = 200, dist = "normal", scale = 2, verbose = FALSE)
+mod <- gam(y ~ s(x0, bs = "cr") +
+               s(x1, bs = "bs", m = c(4, 2)) +
+               s(x2, bs = "ps") + 
+               s(x3), data = dat)
+```
+
+Plot the smooth terms with `mgcv`'s internal plot-function:
+
+```{r, plot}
+plot(mod, pages = 1)
+```
+
+\newpage
+
+## Derive closed formulas for all supported smooth terms
+
+Applying `gam2formula()` derives closed formulas for all supported smooth terms. Use `summary()` to get an overview:
+
+```{r, gam2formula}
+mod_formulas <- gam2formula(mod)
+summary(mod_formulas)
+```
+
+## Print derived formulas
+
+To print a derived formula, use `print()` with the desired `term`.
+
+### Cubic regression spline for `x0`
+
+Let's look at the formula for the predictor `x0`, modeled with a cubic regression spline:
+
+```{r, inspect1}
+print(mod_formulas, term = "x0")
+```
+
+### B-spline for `x1`
+
+Let's look at the formula for the predictor `x1`, modeled with a B-spline of degree 4:
+
+```{r, inspect2}
+print(mod_formulas, term = "x1")
+```
+
+
+### P-spline for `x2`
+
+Let's look at the formula for the predictor `x2`, modeled with a P-spline of degree 3:
+
+```{r, inspect3}
+print(mod_formulas, term = "x2")
+```
+
+\newpage
+
+## Compare to internal predictions by `mgcv`
+
+As a quick visual check, we can make predictions for a vector of new predictor values based on our obtained formulas, using `predict()`, and compare it to the internal predictions plot from `mgcv`. We deliberately choose new values of the predictor partially outside of the observed range to also show the expected behavior for extrapolation (which is linear by `mgcv`'s default).
+ 
+### Cubic regression spline for `x0`
+
+```{r, compare1}
+# generate new predictor data
+x0_newmin <- min(dat$x0) - 0.2
+x0_newmax <- max(dat$x0) + 0.2
+x0_new <- seq(x0_newmin, x0_newmax, length.out = 30)
+
+# compute the linear predictor from coefficient table for new data points
+y <- predict(mod_formulas, term = "x0", newdata = data.frame(x0 = x0_new))
+
+# plot comparison
+plot(mod, select = 1, xlim = c(x0_newmin, x0_newmax))
+points(x0_new, y, col = "dodgerblue", pch = 16)
+```
+
+### B-spline for `x1`
+
+```{r, compare2}
+# generate new predictor data
+x1_newmin <- min(dat$x1) - 0.2
+x1_newmax <- max(dat$x1) + 0.2
+x1_new <- seq(x1_newmin, x1_newmax, length.out = 30)
+
+# compute the linear predictor from coefficient table for new data points
+y <- predict(mod_formulas, term = "x1", newdata = data.frame(x1 = x1_new))
+
+# plot comparison
+plot(mod, select = 2, xlim = c(x1_newmin, x1_newmax))
+points(x1_new, y, col = "olivedrab", pch = 16)
+```
+
+### P-spline for `x2`
+
+```{r, compare3}
+# generate new predictor data
+x2_newmin <- min(dat$x2) - 0.2
+x2_newmax <- max(dat$x2) + 0.2
+x2_new <- seq(x2_newmin, x2_newmax, length.out = 30)
+
+# compute the linear predictor from coefficient table for new data points
+y <- predict(mod_formulas, term = "x2", newdata = data.frame(x2 = x2_new))
+
+# plot comparison
+plot(mod, select = 3, xlim = c(x2_newmin, x2_newmax))
+points(x2_new, y, col = "tomato", pch = 16)
+```
+
+\newpage
+
+## Print formulas in LaTeX
+
+We can also print the formulas in LaTeX using the `print()` function. The resulting LaTeX code can be pasted directly into a LaTeX editor of your choice. When using `results = 'asis'` for the chunk options, the LaTeX code will be compiled directly in an RMarkdown script like the current vignette.
+
+### Cubic regression spline for `x0`
+
+```{r, latexform1, results='asis'}
+print(mod_formulas, term = "x0", format = "latex")
+```
+
+### B-spline for `x1`
+
+```{r, latexform2, results = 'asis'}
+print(mod_formulas, term = "x1", format = "latex")
+```
+
+### P-spline for `x2`
+
+```{r, latexform3, results = 'asis'}
+print(mod_formulas, term = "x2", format = "latex")
+```
+
+\newpage
+
+# Bernoulli GAM
+
+## Fit model with `mgcv`
+
+As real example data, we use the original Pima Indians Diabetes data set as provided, for instance, in the `mlbench` package. We predict binary diabetes status using cubic regression splines for age and glucose level and plot the estimated effects.
+
+```{r, fitbinary}
+library(mlbench)
+data(PimaIndiansDiabetes)
+PimaIndiansDiabetes$diabetes <- as.numeric(PimaIndiansDiabetes$diabetes == "pos")
+mod <- gam(diabetes ~ s(age, bs = "cr", k = 8) + s(glucose, bs = "cr", k = 8), 
+         family = "binomial", data = PimaIndiansDiabetes)
+plot(mod, pages = 1)
+```
+
+## Print formulas in LaTeX
+
+```{r, printbinary, results = 'asis'}
+mod_formulas <- gam2formula(mod)
+print(mod_formulas, term = "age", format = "latex")
+print(mod_formulas, term = "glucose", format = "latex")
+```
+
+## Handling point predictions
+
+To get the predicted probability of diabetes for two newly observed individuals using `predict()`, we need to build the linear predictor from its three components (an intercept term, the age term, and the glucose term) and apply the inverse link function:
+
+```{r, predbinary}
+newdata <- data.frame(age = c(22, 53), glucose = c(92, 131)) # new observations
+
+linpred <- coef(mod)["(Intercept)"] + # global intercept
+  predict(mod_formulas, "age", newdata) + # linear predictor term for age
+  predict(mod_formulas, "glucose", newdata) # linear predictor term for glucose
+
+plogis(linpred)
+```
+
+The result is equivalent to the predicted probabilities from `mgcv::predict.gam()`:
+
+```{r, predbinaryauto}
+as.numeric(mgcv::predict.gam(mod, newdata, type = "response"))
+```
+
+Note that for models with many predictors, it can be convenient to use `mgcv`'s `exclude` argument to get all linear predictor contributions *except* the term of interest from `mgcv`, and then add the derived formula's prediction:
+
+```{r, predbinaryexclude}
+ # get full linear predictor except s(age) from mgcv
+linpred <- as.numeric(predict(mod, newdata, exclude = "s(age)")) +
+  predict(mod_formulas, "age", newdata) # then add age term gam2formula
+
+plogis(linpred)
+```
