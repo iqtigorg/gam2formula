@@ -4,7 +4,10 @@
 # gam2formula
 
 <!-- badges: start -->
+
 [![R-CMD-check](https://github.com/iqtigorg/gam2formula/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/iqtigorg/gam2formula/actions/workflows/R-CMD-check.yaml)
+[![Codecov test
+coverage](https://codecov.io/gh/iqtigorg/gam2formula/graph/badge.svg)](https://app.codecov.io/gh/iqtigorg/gam2formula)
 <!-- badges: end -->
 
 The `gam2formula` package converts spline smooths from generalized
