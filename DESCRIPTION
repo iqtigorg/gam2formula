@@ -8,7 +8,7 @@ Authors@R: c(
          email = "stefan.gehrig@iqtig.org", role = c("aut")))
 Description: Converts spline smooths from generalized additive models
     fitted with 'mgcv' into closed-form algebraic formulas that can be
-    printed, exported to 'LaTeX', and predicted from.
+    printed, exported to LaTeX, and predicted from.
 License: MIT + file LICENSE
 Encoding: UTF-8
 Depends: R (>= 4.4.0)
