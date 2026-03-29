@@ -20,9 +20,19 @@ knitr::opts_chunk$set(
 [![Codecov test coverage](https://codecov.io/gh/iqtigorg/gam2formula/graph/badge.svg)](https://app.codecov.io/gh/iqtigorg/gam2formula)
 <!-- badges: end -->
 
+## Description
+
 The `gam2formula` package converts spline smooths from generalized additive models
 fitted with `mgcv` into closed-form algebraic formulas that can be
 printed, exported to LaTeX, and predicted from.
+
+## Background
+
+The popular `mgcv` package allows estimating smooth effects for continuous predictor variables in a generalized additive mixed model framework, providing a variety of smoothers with penalized likelihood maximization (Wood, 2017). Yet, there is currently no easy-to-use functionality in the R universe to derive the analytical expression for the estimated smooth conditional mean function. This limits transparency and reproducibility in many applications.
+
+To fill this gap, the `gam2formula` package delivers closed formulaic representations for many common smoothers from `mgcv` in a fast and simple manner, including B-spline, P-spline and cubic regression spline smooths. The derivation is exact and relies on a change of basis of the internally used empirically centered basis functions.
+
+Hence, users can circumvent typical barriers for the use of advanced smoothing methods in applications that require a high degree of transparency (e.g., the detailed reporting of regression coefficients) and reproducibility (e.g., the computation of predictions independent of access to training data; the transfer of prediction models between software platforms). By revealing the expressions behind the prediction machinery, the package can also support educators who teach semi-parametric modeling of smooth effects.
 
 ## Installation
 
@@ -58,3 +68,7 @@ points(15:22, predict(mod_formulas, term = "qsec", newdata = data.frame(qsec = 1
 ```
 
 For further examples and documentation, see our [vignette](inst/doc/using-gam2formula.pdf).
+
+# References
+
+Wood, S.N. (2017) Generalized Additive Models: An Introduction with R (2nd edition). Chapman and Hall/CRC.
