@@ -22,22 +22,21 @@ The popular `mgcv` package allows estimating smooth effects for
 continuous predictor variables in a generalized additive mixed model
 framework, providing a variety of smoothers with penalized likelihood
 maximization (Wood, 2017). Yet, there is currently no easy-to-use
-functionality in the R universe to derive the analytical expression for
-the estimated smooth conditional mean function. This limits transparency
-and reproducibility in many applications.
+functionality in the R ecosystem to derive the closed-form algebraic
+expression for the estimated smooth conditional mean function. This
+limits transparency and reproducibility in many applications.
 
-To fill this gap, the `gam2formula` package delivers closed formulaic
-representations for many common smoothers from `mgcv` in a fast and
-simple manner, including B-spline, P-spline and cubic regression spline
+The `gam2formula` package fills this gap for many common smoothers from
+`mgcv`, including B-spline, P-spline and cubic regression spline
 smooths. The derivation is exact and relies on a change of basis of the
 internally used empirically centered basis functions.
 
-Hence, users can circumvent typical barriers for the use of advanced
+Hence, users can overcome typical barriers for the use of advanced
 smoothing methods in applications that require a high degree of
 transparency (e.g., the detailed reporting of regression coefficients)
 and reproducibility (e.g., the computation of predictions independent of
 access to training data; the transfer of prediction models between
-software platforms). By revealing the expressions behind the prediction
+software platforms). By exposing the expressions behind the prediction
 machinery, the package can also support educators who teach
 semi-parametric modeling of smooth effects.
 
@@ -62,7 +61,7 @@ plot(m)
 <img src="man/figures/README-example0-1.png" alt="" width="75%" />
 
 Display the algebraic formula of a spline as coefficient table using
-`gam2formula` :
+`gam2formula`:
 
 ``` r
 library(gam2formula)
