@@ -13,8 +13,8 @@ coverage](https://codecov.io/gh/iqtigorg/gam2formula/graph/badge.svg)](https://a
 ## Description
 
 The `gam2formula` package converts spline smooths from generalized
-additive models fitted with `mgcv` into closed-form algebraic formulas
-that can be printed, exported to LaTeX, and predicted from.
+additive models fitted with `mgcv` into closed formulas that can be
+printed, exported to LaTeX, and predicted from.
 
 ## Background
 
@@ -22,9 +22,9 @@ The popular `mgcv` package allows estimating smooth effects for
 continuous predictor variables in a generalized additive mixed model
 framework, providing a variety of smoothers with penalized likelihood
 maximization (Wood, 2017). Yet, there is currently no easy-to-use
-functionality in the R ecosystem to derive the closed-form algebraic
-expression for the estimated smooth conditional mean function. This
-limits transparency and reproducibility in many applications.
+functionality in the R ecosystem to derive the closed formula for the
+estimated smooth conditional mean function. This limits transparency and
+reproducibility in many applications.
 
 The `gam2formula` package fills this gap for many common smoothers from
 `mgcv`, including B-spline, P-spline and cubic regression spline
@@ -45,7 +45,7 @@ semi-parametric modeling of smooth effects.
 You can install the current version of `gam2formula` with:
 
 ``` r
-remotes::install_github("iqtigorg/gam2formula")
+pak::pak("iqtigorg/gam2formula")
 ```
 
 ## Example
@@ -60,7 +60,7 @@ plot(m)
 
 <img src="man/figures/README-example0-1.png" alt="" width="75%" />
 
-Display the algebraic formula of a spline as coefficient table using
+Display the closed formula of a spline as coefficient table using
 `gam2formula`:
 
 ``` r

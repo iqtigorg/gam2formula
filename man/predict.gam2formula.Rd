@@ -52,6 +52,7 @@ newdata = data.frame(x0 = seq(min(dat$x0), max(dat$x0), len = 100)))
 
 }
 \seealso{
-Use the function \code{\link[=print.gam2formula]{print()}} to 
-print the derived formula of a smooth.
+Use the function \code{\link[=summary.gam2formula]{summary()}} 
+for an overview and the function \code{\link[=print.gam2formula]{print()}} to print 
+the derived formula of a smooth.
 }

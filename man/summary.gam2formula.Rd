@@ -30,8 +30,8 @@ summary(mod_formulas)
 
 }
 \seealso{
-Use the function \code{\link[=print.gam2formula]{print()}} 
-to print the derived formula of a smooth and the function 
+Use the function  \code{\link[=print.gam2formula]{print()}} to print 
+the derived formula of a smooth and the function 
 \code{\link[=predict.gam2formula]{predict()}} to predict from the derived 
 formula of a smooth.
 }

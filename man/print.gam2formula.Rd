@@ -47,7 +47,7 @@ print(mod_formulas, term = "x0", format = "latex")
 
 }
 \seealso{
-Use the function \code{\link[=predict.gam2formula]{predict()}} 
-to predict from the derived formula of a smooth and the 
-function \code{\link[=summary.gam2formula]{summary()}} for an overview.
+Use the function \code{\link[=summary.gam2formula]{summary()}} 
+for an overview and the function  \code{\link[=predict.gam2formula]{predict()}} 
+to predict from the derived formula of a smooth.
 }
