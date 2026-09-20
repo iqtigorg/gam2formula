@@ -26,8 +26,8 @@ framework, providing a variety of smoothers with penalized likelihood
 maximization (Wood, 2017). Yet, there is currently no easy-to-use
 functionality in the `R` ecosystem to derive the closed formula for the
 estimated smooth conditional mean function in terms of the original
-predictor variable. Instead, plotting and predictions require the
-original model object. This limits transparency and reproducibility in
+predictor variable. Instead, plotting and predictions require `mgcv`’s
+fitted model object. This limits transparency and reproducibility in
 many applications.
 
 The `gam2formula` package fills this gap for many common smoothers from
@@ -89,8 +89,8 @@ print(mod_formulas, term = "times")
 #> 12 times 1     abs((times-57.6)/55.2)^3                  1.50
 ```
 
-And use the formula for point predictions, independent of the original
-model object:
+And use the formula for point predictions, independent of the model
+object:
 
 ``` r
 plot(m)
