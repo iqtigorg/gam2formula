@@ -24,9 +24,11 @@ The popular `mgcv` package allows estimating smooth effects for
 continuous predictor variables in a generalized additive mixed model
 framework, providing a variety of smoothers with penalized likelihood
 maximization (Wood, 2017). Yet, there is currently no easy-to-use
-functionality in the R ecosystem to derive the closed formula for the
-estimated smooth conditional mean function. This limits transparency and
-reproducibility in many applications.
+functionality in the `R` ecosystem to derive the closed formula for the
+estimated smooth conditional mean function in terms of the original
+predictor variable. Instead, plotting and predictions require the
+original model object. This limits transparency and reproducibility in
+many applications.
 
 The `gam2formula` package fills this gap for many common smoothers from
 `mgcv`, including B-spline, P-spline and cubic regression spline
@@ -56,7 +58,8 @@ Fit a spline in a generalized additive model using `mgcv`:
 
 ``` r
 library(mgcv)
-m <- gam(mpg ~ s(qsec, bs = "cr", k = 5), data = mtcars)
+library(MASS)
+m <- gam(accel ~ s(times, bs = "cr"), data = mcycle)
 plot(m)
 ```
 
@@ -68,17 +71,22 @@ Display the closed formula of a spline as coefficient table using
 ``` r
 library(gam2formula)
 mod_formulas <- gam2formula(m)
-print(mod_formulas, term = "qsec")
-#> # A tibble: 7 × 4
-#>   term  range bfun                          coef
-#>   <chr> <chr> <chr>                        <dbl>
-#> 1 qsec  1     1                            10.2 
-#> 2 qsec  1     (qsec-14.5)/8.4               8.42
-#> 3 qsec  1     abs((qsec-14.5)/8.4)^3     -140.  
-#> 4 qsec  1     abs((qsec-16.8775)/8.4)^3  1382.  
-#> 5 qsec  1     abs((qsec-17.71)/8.4)^3   -2057.  
-#> 6 qsec  1     abs((qsec-18.8275)/8.4)^3   867.  
-#> 7 qsec  1     abs((qsec-22.9)/8.4)^3      -51.5
+print(mod_formulas, term = "times")
+#> # A tibble: 12 × 4
+#>    term  range bfun                                      coef
+#>    <chr> <chr> <chr>                                    <dbl>
+#>  1 times 1     1                                        22.2 
+#>  2 times 1     (times-2.4)/55.2                        -27.0 
+#>  3 times 1     abs((times-2.4)/55.2)^3                1779.  
+#>  4 times 1     abs((times-9.06666666666667)/55.2)^3 -21164.  
+#>  5 times 1     abs((times-14.7333333333333)/55.2)^3  71061.  
+#>  6 times 1     abs((times-17.8)/55.2)^3             -38694.  
+#>  7 times 1     abs((times-22.4)/55.2)^3             -51015.  
+#>  8 times 1     abs((times-26.3333333333333)/55.2)^3  28623.  
+#>  9 times 1     abs((times-31.2)/55.2)^3              26924.  
+#> 10 times 1     abs((times-36.8)/55.2)^3             -20581.  
+#> 11 times 1     abs((times-44.2666666666667)/55.2)^3   3065.  
+#> 12 times 1     abs((times-57.6)/55.2)^3                  1.50
 ```
 
 And use the formula for point predictions, independent of the original
@@ -86,7 +94,8 @@ model object:
 
 ``` r
 plot(m)
-points(15:22, predict(mod_formulas, term = "qsec", newdata = data.frame(qsec = 15:22)))
+x <- seq(5, 55, 2.5)
+points(x, predict(mod_formulas, term = "times", newdata = data.frame(times = x)), pch = 16)
 ```
 
 <img src="man/figures/README-example2-1.png" alt="" width="75%" />
