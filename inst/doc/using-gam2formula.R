@@ -77,25 +77,23 @@ print(mod_formulas, term = "x1", format = "latex")
 ## ----latexform3, results = 'asis'---------------------------------------------
 print(mod_formulas, term = "x2", format = "latex")
 
-## ----fitbinary----------------------------------------------------------------
-library(mlbench)
-data(PimaIndiansDiabetes)
-PimaIndiansDiabetes$diabetes <- as.numeric(PimaIndiansDiabetes$diabetes == "pos")
-mod <- gam(diabetes ~ s(age, bs = "cr", k = 8) + s(glucose, bs = "cr", k = 8), 
-         family = "binomial", data = PimaIndiansDiabetes)
+## ----fitbinary, fig.asp = 0.6-------------------------------------------------
+library(NHANES)
+mod <- gam(Diabetes ~ s(Weight, bs = "cr", k = 8) + s(BPSysAve, bs = "cr", k = 8), 
+           family = "binomial", data = NHANES)
 plot(mod, pages = 1)
 
 ## ----printbinary, results = 'asis'--------------------------------------------
 mod_formulas <- gam2formula(mod)
-print(mod_formulas, term = "age", format = "latex")
-print(mod_formulas, term = "glucose", format = "latex")
+print(mod_formulas, term = "Weight", format = "latex")
+print(mod_formulas, term = "BPSysAve", format = "latex")
 
 ## ----predbinary---------------------------------------------------------------
-newdata <- data.frame(age = c(22, 53), glucose = c(92, 131)) # new observations
+newdata <- data.frame(Weight = c(70, 130), BPSysAve = c(105, 115)) # new observations
 
 linpred <- coef(mod)["(Intercept)"] + # global intercept
-  predict(mod_formulas, "age", newdata) + # linear predictor term for age
-  predict(mod_formulas, "glucose", newdata) # linear predictor term for glucose
+  predict(mod_formulas, "Weight", newdata) + # linear predictor term for weight
+  predict(mod_formulas, "BPSysAve", newdata) # linear predictor term for systolic blood pressure
 
 plogis(linpred)
 
@@ -103,9 +101,9 @@ plogis(linpred)
 as.numeric(mgcv::predict.gam(mod, newdata, type = "response"))
 
 ## ----predbinaryexclude--------------------------------------------------------
- # get full linear predictor except s(age) from mgcv
-linpred <- as.numeric(predict(mod, newdata, exclude = "s(age)")) +
-  predict(mod_formulas, "age", newdata) # then add age term gam2formula
+ # get full linear predictor except s(Weight) from mgcv
+linpred <- as.numeric(predict(mod, newdata, exclude = "s(Weight)")) +
+  predict(mod_formulas, "Weight", newdata) # then add weight term gam2formula
 
 plogis(linpred)
 

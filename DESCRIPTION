@@ -1,6 +1,6 @@
 Package: gam2formula
 Title: Formulas from splines fitted in 'mgcv'
-Version: 0.2.6
+Version: 0.2.7
 Authors@R: c(
   person(given = "Paul", family = "Bach",
          email = "paul.bach@iqtig.org", role = c("aut", "cre")),
@@ -21,8 +21,8 @@ Imports:
 RoxygenNote: 7.3.3
 Suggests: 
     knitr,
-    markdown,
+    rmarkdown,
     testthat (>= 3.0.0),
-    mlbench
+    NHANES
 VignetteBuilder: knitr
 Config/testthat/edition: 3
