@@ -18,7 +18,6 @@ Imports:
     purrr (>= 1.1.0),
     tibble (>= 3.3.0),
     kableExtra (>= 1.4.0)
-RoxygenNote: 7.3.3
 Suggests: 
     knitr,
     markdown,
@@ -26,3 +25,4 @@ Suggests:
     mlbench
 VignetteBuilder: knitr
 Config/testthat/edition: 3
+Config/roxygen2/version: 8.1.0
