@@ -100,10 +100,3 @@ plogis(linpred)
 ## ----predbinaryauto-----------------------------------------------------------
 as.numeric(mgcv::predict.gam(mod, newdata, type = "response"))
 
-## ----predbinaryexclude--------------------------------------------------------
- # get full linear predictor except s(Weight) from mgcv
-linpred <- as.numeric(predict(mod, newdata, exclude = "s(Weight)")) +
-  predict(mod_formulas, "Weight", newdata) # then add weight term gam2formula
-
-plogis(linpred)
-

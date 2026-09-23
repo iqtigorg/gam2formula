@@ -206,13 +206,3 @@ The result is equivalent to the predicted probabilities from `mgcv::predict.gam(
 ```{r, predbinaryauto}
 as.numeric(mgcv::predict.gam(mod, newdata, type = "response"))
 ```
-
-Note that for models with many predictors, it can be convenient to use `mgcv`'s `exclude` argument to get all linear predictor contributions from `mgcv` *except* the term of interest, and then add the derived formula's prediction:
-
-```{r, predbinaryexclude}
- # get full linear predictor except s(Weight) from mgcv
-linpred <- as.numeric(predict(mod, newdata, exclude = "s(Weight)")) +
-  predict(mod_formulas, "Weight", newdata) # then add weight term gam2formula
-
-plogis(linpred)
-```
