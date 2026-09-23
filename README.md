@@ -24,11 +24,10 @@ The popular `mgcv` package allows estimating smooth effects for
 continuous predictor variables in a generalized additive mixed model
 framework, providing a variety of smoothers with penalized likelihood
 maximization (Wood, 2017). Yet, there is currently no easy-to-use
-functionality in the `R` ecosystem to derive the closed formula for the
-estimated smooth conditional mean function in terms of the original
-predictor variable. Instead, plotting and predictions require `mgcv`’s
-fitted model object. This limits transparency and reproducibility in
-many applications.
+functionality in the `R` ecosystem for the estimated smooth effect in
+terms of the original predictor variable. Instead, plotting and
+predictions require `mgcv`’s fitted model object. This limits
+transparency and reproducibility in many applications.
 
 The `gam2formula` package fills this gap for many common smoothers from
 `mgcv`, including B-spline, P-spline and cubic regression spline
