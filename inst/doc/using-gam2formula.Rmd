@@ -170,14 +170,12 @@ print(mod_formulas, term = "x2", format = "latex")
 
 ## Fit model with `mgcv`
 
-As real example data, we use the original Pima Indians Diabetes data set as provided, for instance, in the `mlbench` package. We predict binary diabetes status using cubic regression splines for age and glucose level and plot the estimated effects.
+As a real-world example, we use data from the US National Health and Nutrition Examination Study as provided in the `NHANES` package. We predict binary diabetes status (`Diabetes`) using cubic regression splines for weight (`Weight`) and systolic blood pressure (`BPSysAve`) and plot the estimated effects.
 
-```{r, fitbinary}
-library(mlbench)
-data(PimaIndiansDiabetes)
-PimaIndiansDiabetes$diabetes <- as.numeric(PimaIndiansDiabetes$diabetes == "pos")
-mod <- gam(diabetes ~ s(age, bs = "cr", k = 8) + s(glucose, bs = "cr", k = 8), 
-         family = "binomial", data = PimaIndiansDiabetes)
+```{r, fitbinary, fig.asp = 0.6}
+library(NHANES)
+mod <- gam(Diabetes ~ s(Weight, bs = "cr", k = 8) + s(BPSysAve, bs = "cr", k = 8), 
+           family = "binomial", data = NHANES)
 plot(mod, pages = 1)
 ```
 
@@ -185,20 +183,20 @@ plot(mod, pages = 1)
 
 ```{r, printbinary, results = 'asis'}
 mod_formulas <- gam2formula(mod)
-print(mod_formulas, term = "age", format = "latex")
-print(mod_formulas, term = "glucose", format = "latex")
+print(mod_formulas, term = "Weight", format = "latex")
+print(mod_formulas, term = "BPSysAve", format = "latex")
 ```
 
-## Handling point predictions
+## Making point predictions
 
-To get the predicted probability of diabetes for two newly observed individuals using `predict()`, we need to build the linear predictor from its three components (an intercept term, the age term, and the glucose term) and apply the inverse link function:
+To get the predicted probability of diabetes for two newly observed individuals using `predict()`, we need to build the linear predictor from its three components (an intercept term, the weight term, and the systolic blood pressure term) and apply the inverse link function:
 
 ```{r, predbinary}
-newdata <- data.frame(age = c(22, 53), glucose = c(92, 131)) # new observations
+newdata <- data.frame(Weight = c(70, 130), BPSysAve = c(105, 115)) # new observations
 
 linpred <- coef(mod)["(Intercept)"] + # global intercept
-  predict(mod_formulas, "age", newdata) + # linear predictor term for age
-  predict(mod_formulas, "glucose", newdata) # linear predictor term for glucose
+  predict(mod_formulas, "Weight", newdata) + # linear predictor term for weight
+  predict(mod_formulas, "BPSysAve", newdata) # linear predictor term for systolic blood pressure
 
 plogis(linpred)
 ```
@@ -207,14 +205,4 @@ The result is equivalent to the predicted probabilities from `mgcv::predict.gam(
 
 ```{r, predbinaryauto}
 as.numeric(mgcv::predict.gam(mod, newdata, type = "response"))
-```
-
-Note that for models with many predictors, it can be convenient to use `mgcv`'s `exclude` argument to get all linear predictor contributions *except* the term of interest from `mgcv`, and then add the derived formula's prediction:
-
-```{r, predbinaryexclude}
- # get full linear predictor except s(age) from mgcv
-linpred <- as.numeric(predict(mod, newdata, exclude = "s(age)")) +
-  predict(mod_formulas, "age", newdata) # then add age term gam2formula
-
-plogis(linpred)
 ```
